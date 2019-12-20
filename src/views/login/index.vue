@@ -3,11 +3,11 @@
     <el-card class="login-card">
       <div class="title"><img src="../../assets/img/logo_index.png" alt=""></div>
       <el-form :model=formLogin :rules="rules" ref="myLogin">
-        <el-form-item prop="personID">
-          <el-input placsholder="请输入号码" v-model="formLogin.personID"></el-input>
+        <el-form-item prop="mobile">
+          <el-input placsholder="请输入号码" v-model="formLogin.mobile"></el-input>
         </el-form-item>
-        <el-form-item prop="verify">
-          <el-input placsholder="请输入验证码" style="width:65%" v-model="formLogin.verify"></el-input><el-button plain style="float:right">发送验证码</el-button>
+        <el-form-item prop="code">
+          <el-input placsholder="请输入验证码" style="width:65%" v-model="formLogin.code"></el-input><el-button plain style="float:right">发送验证码</el-button>
         </el-form-item>
         <el-form-item prop="agree">
           <el-checkbox v-model="formLogin.agree">同意相关条款以及协议</el-checkbox>
@@ -26,13 +26,13 @@ export default {
     return {
       // 绑定表单数据对象
       formLogin: {
-        personID: '',
-        verify: '',
+        mobile: '',
+        code: '',
         agree: ''
       },
       rules: {
-        personID: [{ required: true, message: '请输入正确号码' }, { pattern: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/, message: '请正确输入身份证号' }],
-        verify: [ { required: true, message: '请输入正确验证码号码' }, { pattern: /^\d{6}$/, message: '格式为6位数字' } ],
+        mobile: [{ required: true, message: '请输入正确号码' }, { pattern: /^1[3456789]\d{9}$/, message: '请正确输入身份证号' }],
+        code: [ { required: true, message: '请输入正确验证码号码' }, { pattern: /^\d{6}$/, message: '格式为6位数字' } ],
         // 是否勾选协议规则 使用一个自定义校验函数
         agree: [{ validator: function (rules, value, callback) {
           // if (value) { // 勾选
@@ -50,9 +50,21 @@ export default {
     sbmLogin () {
       // 点击登陆 激活手动校验
       // 获取到当前dom实例 使用校验整个表单 validate方法
-      this.$refs.myLogin.validate(function (isOK) {
+      this.$refs.myLogin.validate(isOK => {
         if (isOK) {
-          console.log('OK')
+          // 验证通过 发送请求 成功结果中的token令牌保存至本地localStorage
+          this.$http.post('authorizations', this.formLogin).then(res => {
+            // console.log(res.data.data.token)
+            window.localStorage.setItem('user-token', res.data.data.token)
+            // 实现跳转 编程式导航
+            this.$router.push('/home')
+          }).catch(res => {
+            // 输入错误提示信息 该方法来自ele
+            this.$message({
+              message: '输入错误请重新输入',
+              type: 'warning'
+            })
+          })
         }
       })
     }

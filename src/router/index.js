@@ -2,9 +2,10 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../views/login'
 import Home from '../views/home'
+import homeA from '../views/home/home-a.vue'// 导入二级组件
 Vue.use(VueRouter)
 
-const routes = [
+const routes = [// 配置路由
   {
     path: '/',
     component: Login
@@ -15,7 +16,10 @@ const routes = [
   },
   {
     path: '/home',
-    component: Home
+    component: Home,
+    // 配置二级路由
+    // path不写路径 默认跳转
+    children: [{ path: '', component: homeA }]
   }
   // {
   // path: '/about',
