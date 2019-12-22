@@ -1,9 +1,9 @@
 <template>
 <div>
     <el-container>
-    <el-aside style="background:#808080;height:100vh;opacity:0.6"><asideIn></asideIn></el-aside>
+    <el-aside style="background:#00ced1;height:100vh;" width="200px"><asideIn></asideIn></el-aside>
     <el-container>
-        <el-header style="background:#808080;opacity:0.6"><headerIn></headerIn></el-header>
+        <el-header style="background:#00ced1;"><headerIn></headerIn></el-header>
         <el-main>
             <!-- 放置二级路由容器 -->
             <router-view></router-view>

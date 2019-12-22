@@ -1,12 +1,17 @@
 <template>
   <el-row type="flex" justify="space-between" class="header">
-    <el-col :span="12" class="left">
-      <i class="el-icon-turn-off-microphone"></i>
-      <span>穿过了熙攘的人海、想找谁能把你取代</span>
+    <el-col :span="18" class="left">
+      <!-- <i class="el-icon-turn-off-microphone"></i>
+      <span>失眠</span> -->
     </el-col>
-    <el-col :span="12" class="right">
+    <el-col :span="6" class="right">
       <el-row justify="end" type="flex" align="middle">
-        <img :src="userInfo.photo" alt />
+        <!-- <img :src="userInfo.photo" alt /> -->
+        <img :src="userInfo.photo ? userInfo.photo : defaultImg" alt />
+          <!-- img固定地址的话 代码会被编译成base64字符串 此时可以预览 -->
+          <!-- 若是动态变量 相对地址无法显示 -->
+          <!-- 如果想用 需把图片转换成一个变量 -->
+          <!-- 详见40行 defaultImg-->
         <el-dropdown @command="commands" style="">
           <!-- 此处用到了指令事件 -->
           <span class="el-dropdown-link">
@@ -18,9 +23,9 @@
             <el-dropdown-item command="user">
               <el-popover placement="left" width="400" trigger="hover">
                 <el-table :data="gridData">
-                  <el-table-column width="150" property="date" label="日期"></el-table-column>
-                  <el-table-column width="100" property="name" label="姓名"></el-table-column>
-                  <el-table-column width="300" property="address" label="地址"></el-table-column>
+                  <el-table-column width="120" property="date" label="日期"></el-table-column>
+                  <el-table-column width="120" property="name" label="姓名"></el-table-column>
+                  <el-table-column width="300" property="address" label="描述"></el-table-column>
                 </el-table>
                 <el-button slot="reference" style="border:none">周思涵</el-button>
               </el-popover>
@@ -54,25 +59,29 @@ export default {
       }, {
         date: '2016-05-01',
         name: '洒脱',
-        address: '上海市普陀区金沙江路 1518 弄'
+        address: '你走的时候别带走'
       }, {
         date: '2016-05-03',
         name: '备爱',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }]
+        address: '慢慢忘记从前'
+      }],
+      defaultImg: require('../../assets/img/avatar.jpg')
+      // 需要一个默认值 在没有头像的情况下给一个图片
     }
   },
   created () {
     // 页面创建完毕 请求数据 通过携带之前存储在本地的token令牌
-    let token = window.localStorage.getItem('user-token')
+    // let token = window.localStorage.getItem('user-token')
     this.$http({
-      url: '/user/profile',
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+      url: '/user/profile'
+      // headers: {
+      //   // bearer 持有传递 姓名持有人
+      //   Authorization: `Bearer ${token}`
+      // }
     }).then(res => {
-      console.log(res, res.data.data)
-      this.userInfo = res.data.data
+      // console.log(res, res.data)
+      this.userInfo = res.data
+      console.log(this.userInfo)
     })
   },
   methods: {
@@ -98,6 +107,7 @@ export default {
   .left {
     span {
       margin-left: 10px;
+      font-size: 10px;
     }
   }
   .right {

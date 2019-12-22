@@ -19,7 +19,7 @@ const routes = [// 配置路由
     component: Home,
     // 配置二级路由
     // path不写路径 默认跳转
-    children: [{ path: '', component: homeA }]
+    children: [{ path: '', component: homeA }, { path: '/home/c', component: () => import('../views/comment/index.vue') }]
   }
   // {
   // path: '/about',

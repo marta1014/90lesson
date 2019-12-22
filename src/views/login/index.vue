@@ -26,8 +26,8 @@ export default {
     return {
       // 绑定表单数据对象
       formLogin: {
-        mobile: '',
-        code: '',
+        mobile: '13911111111',
+        code: '246810',
         agree: ''
       },
       rules: {
@@ -55,7 +55,7 @@ export default {
           // 验证通过 发送请求 成功结果中的token令牌保存至本地localStorage
           this.$http.post('authorizations', this.formLogin).then(res => {
             // console.log(res.data.data.token)
-            window.localStorage.setItem('user-token', res.data.data.token)
+            window.localStorage.setItem('user-token', res.data.token)
             // 实现跳转 编程式导航
             this.$router.push('/home')
           }).catch(res => {
@@ -74,7 +74,7 @@ export default {
 
 <style lang="less" scoped>
 .login {
-  background-image: url('../../assets/img/background.jpg');
+  background-image: url('../../assets/img/sea.jpg');
   background-size: cover;
   height: 100vh;
   display: flex;
