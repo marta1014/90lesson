@@ -1,7 +1,7 @@
 <template>
 <div>
     <el-container>
-    <el-aside style="background:#00ced1;height:100vh;" width="200px"><asideIn></asideIn></el-aside>
+    <el-aside style="background:#00ced1;min-height:100vh;" width="200px"><asideIn></asideIn></el-aside>
     <el-container>
         <el-header style="background:#00ced1;"><headerIn></headerIn></el-header>
         <el-main>

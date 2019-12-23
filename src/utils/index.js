@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { Message } from 'element-ui'
 import router from '../router'
+import JSONBig from 'json-bigint'// 安装注册解决js无法处理大数字的问题
 axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0'// 常态值的优化
 axios.interceptors.request.use(function (config) {
 //   console.log(config)
@@ -9,6 +10,11 @@ axios.interceptors.request.use(function (config) {
   //   console.log(config)
   return config
 })
+// 在数据到达响应之前进行处理
+axios.defaults.transformResponse = [function (data) {
+  return data ? JSONBig.parse(data) : {} // 解决js处理大数字失真问题
+}]
+
 axios.interceptors.response.use(function (response) {
   console.log(response)
   // 成功时进入此函数 return 响应数据
@@ -16,8 +22,8 @@ axios.interceptors.response.use(function (response) {
   // 判断非空
 }, function (error) {
   // 错误进入此函数
-  console.log(error.response.status)
-  let status = error.response.status // 获取失败的状态码
+  // console.log(error.response.status)
+  let status = error.response.status // 获取失败的状态码给予提示消息
   let message = '未知错误'
   switch (status) {
     case 400:
@@ -42,7 +48,8 @@ axios.interceptors.response.use(function (response) {
   }
   Message({ type: 'warnig', message })
   //   希望 在异常处理函数中将所有的错误都处理完毕 不再进入catch  终止错误
-//   return new Promise(function () {}) // 终止当前的错误
+  //   return new Promise(function () {}) // 终止当前的错误
+  return Promise.reject(error) // 只要reject =>catch
 })
 
 export default axios
