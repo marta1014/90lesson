@@ -105,6 +105,7 @@ export default {
     },
     // 上传图片
     uploadImg (params) {
+      console.log(params)
       this.loading = true
       let data = new FormData()
       data.append('image', params.file)

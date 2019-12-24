@@ -16,7 +16,7 @@ axios.defaults.transformResponse = [function (data) {
 }]
 
 axios.interceptors.response.use(function (response) {
-  console.log(response)
+  // console.log(response)
   // 成功时进入此函数 return 响应数据
   return response.data ? response.data : {}
   // 判断非空
