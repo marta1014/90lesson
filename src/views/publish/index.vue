@@ -1,5 +1,5 @@
 <template>
-  <el-card v-doading="loading">
+  <el-card v-loading="loading">
     <breadcrumb slot="header">
       <template slot="title">发布作品</template>
     </breadcrumb>
@@ -10,19 +10,22 @@
         </el-form-item>
         <el-form-item label="内容" prop="content">
           <quill-editor type="textarea"
-          style="height:300px; margin:80px 0"
+          style="height:300px; margin:90px 0"
 
           v-model="formData.content"
           ></quill-editor>
         </el-form-item>
         <el-form-item label="封面" prop="cover">
-          <el-radio-group v-model="formData.cover.type">
+          <el-radio-group v-model="formData.cover.type" @change="changeType">
             <el-radio :label="1">单图</el-radio>
             <el-radio :label="3">三图</el-radio>
             <el-radio :label="0">无图</el-radio>
             <el-radio :label="-1">自动</el-radio>
           </el-radio-group>
+          <!-- {{formData.cover}} -->
         </el-form-item>
+        <!-- 封面组件 -->
+        <cover-image :list="formData.cover.images"></cover-image>
         <el-form-item label="频道" prop="channel_id">
           <el-select v-model=formData.channel_id>
             <el-option v-for="item in channels"
@@ -132,6 +135,16 @@ export default {
         this.loading = false
         this.formData = res.data
       })
+    },
+    changeType () {
+      // alert(this.formData.cover.type)
+      if (this.formData.cover.type === 0 || this.formData.cover.type === -1) {
+        this.formData.cover.images = []// 无图或者自动
+      } else if (this.formData.cover.type === 1) {
+        this.formData.cover.images = ['']// 单图
+      } else if (this.formData.cover.type === 3) {
+        this.formData.cover.images = ['', '', '']// 三图
+      }
     }
   },
   watch: {// 监听$route
@@ -154,6 +167,16 @@ export default {
         }
       }
     }
+  //   'formData.cover.type': function () { // 通过watch 监听type变化
+  //     // alert(this.formData.cover.type)
+  //     if (this.formData.cover.type === 0 || this.formData.cover.type === -1) {
+  //       this.formData.cover.images = []// 无图或者自动
+  //     } else if (this.formData.cover.type === 1) {
+  //       this.formData.cover.images = ['']// 单图
+  //     } else if (this.formData.cover.type === 3) {
+  //       this.formData.cover.images = ['', '', '']// 三图
+  //     }
+  //   }
   },
   created () {
     this.getChannels()
