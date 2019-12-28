@@ -27,8 +27,8 @@
         </el-radio-group>
       </el-form-item>
       <!-- 频道列表 -->
-      <el-form-item label="频道列表 :">
-        <el-select placeholder="请选择" v-model="searchForm.channel_id" >
+      <el-form-item label="频道列表 :" prop="channel_id">
+        <el-select placeholder="请选择" v-model="searchForm.channel_id">
         <!-- <el-select placeholder="请选择" v-model="searchForm.channel_id" @change="changeRadio"> -->
           <el-option
             v-for="item in channels"
@@ -66,7 +66,7 @@
             </div>
         </div>
         <div class="right">
-            <span>
+            <span @click="modify(item.id)">
                 <i class="el-icon-edit"></i>修改
                 </span>
             <span @click="delItem(item.id)">
@@ -108,6 +108,11 @@ export default {
     }
   },
   methods: {
+    modify (id) { // 修改页面
+      this.$router.push(`/home/b/${id.toString()}`)
+      // 当两个不同的路由地址却对应同一个组件的时候 如果相互切换 组件实例并不会销毁 也即是不会执行钩子函数的一系列操作
+      // 需要通过watch来监听$route 因为在修改时params参数时携带id的 所以以此来判断时修改页面还是发布文章页面
+    },
     getChannel () { // 请求频道列表
       this.$http({
         url: 'channels'
@@ -121,7 +126,7 @@ export default {
         url: '/articles',
         params// 此处本不需传参 改造为了下边使用
       }).then(res => {
-        console.log(res)
+        // console.log(res)
         this.list = res.data.results// 大数字的问题
         this.page.total = res.data.total_count
       })

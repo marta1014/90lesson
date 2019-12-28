@@ -21,9 +21,10 @@ const routes = [// 配置路由
     // path不写路径 默认跳转
     children: [{ path: '', component: homeA },
       { path: '/home/a', component: () => import('../views/articles/index.vue') },
-      { path: '/home/b', component: () => import('../views/publish/index.vue') },
+      { path: '/home/b', component: () => import('../views/publish/index.vue') }, // 发布文章
       { path: '/home/c', component: () => import('../views/comment/index.vue') },
-      { path: '/home/d', component: () => import('../views/material/index.vue') }
+      { path: '/home/d', component: () => import('../views/material/index.vue') },
+      { path: '/home/b/:id', component: () => import('../views/publish/index.vue') }// 修改文章
     ]
   }
   // {

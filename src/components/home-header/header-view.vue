@@ -81,7 +81,7 @@ export default {
     }).then(res => {
       // console.log(res, res.data)
       this.userInfo = res.data
-      console.log(this.userInfo)
+      // console.log(this.userInfo)
     })
   },
   methods: {
