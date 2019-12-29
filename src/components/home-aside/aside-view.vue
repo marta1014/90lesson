@@ -24,7 +24,7 @@
         <el-menu-item index='/home/g'>程序员</el-menu-item>
         <el-menu-item index='/home/h'>OST精选</el-menu-item>
       </el-submenu>
-      <el-menu-item>播放历史</el-menu-item>
+      <el-menu-item index="/home/i">播放历史</el-menu-item>
     </el-menu>
   </div>
 </template>

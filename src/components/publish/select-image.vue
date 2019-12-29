@@ -7,7 +7,14 @@
                 <img :src="item.url" alt="" @click="clickImg(item.url)">
             </el-card>
         </div>
-        <el-row type="flex" justify="center" style="height:40px">
+
+    </el-tab-pane>
+    <el-tab-pane label="上传图片" name="upload">
+        <el-upload class="uploadImg" action="" :show-file-list="false" :http-request="upload">
+            <i class="el-icon-plus"></i>
+        </el-upload>
+    </el-tab-pane>
+           <el-row type="flex" justify="center" style="height:40px">
   <el-pagination
   background
   layout="prev, pager, next"
@@ -18,12 +25,6 @@
   >
 </el-pagination>
  </el-row>
-    </el-tab-pane>
-    <el-tab-pane label="上传图片" name="upload">
-        <el-upload class="uploadImg" action="" :show-file-list="false" :http-request="upload">
-            <i class="el-icon-plus"></i>
-        </el-upload>
-    </el-tab-pane>
   </el-tabs>
 
 </template>
@@ -50,7 +51,7 @@ export default {
     getImg () { // 获取图片
       this.$http({
         url: '/user/images',
-        collect: { collect: false, page: this.page.currentPage, per_page: this.page.pageSize }
+        params: { collect: false, page: this.page.currentPage, per_page: this.page.pageSize }
       }).then(res => {
         this.list = res.data.results
         this.page.total = res.data.total_count

@@ -28,7 +28,7 @@ export default {
       formLogin: {
         mobile: '13911111111',
         code: '246810',
-        agree: ''
+        agree: true
       },
       rules: {
         mobile: [{ required: true, message: '请输入正确号码' }, { pattern: /^1[3456789]\d{9}$/, message: '请正确输入身份证号' }],
