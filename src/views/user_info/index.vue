@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import eventBus from '../../utils/eventbus'// 引入事件池
 export default {
   // 校验三要素 :model prop rules
   data () {
@@ -72,6 +73,7 @@ export default {
               type: 'success',
               message: '成功修改'
             })
+            eventBus.$emit('sucPic')
           })
         }
       })
@@ -91,6 +93,8 @@ export default {
           message: '修改成功'
         })
         this.formData.photo = res.data.photo
+        // 通知头部组件 信息已更新
+        eventBus.$emit('sucPic', this.formData.photo)
       })
     }
   },

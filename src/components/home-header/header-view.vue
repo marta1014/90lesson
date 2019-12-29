@@ -40,6 +40,7 @@
 </template>
 
 <script>
+import eventBus from '../../utils/eventbus'
 export default {
   data () {
     return {
@@ -72,19 +73,30 @@ export default {
   created () {
     // 页面创建完毕 请求数据 通过携带之前存储在本地的token令牌
     // let token = window.localStorage.getItem('user-token')
-    this.$http({
-      url: '/user/profile'
-      // headers: {
-      //   // bearer 持有传递 姓名持有人
-      //   Authorization: `Bearer ${token}`
-      // }
-    }).then(res => {
-      // console.log(res, res.data)
-      this.userInfo = res.data
-      // console.log(this.userInfo)
+    // this.$http({
+    //   url: '/user/profile'
+    // headers: {
+    //   // bearer 持有传递 姓名持有人
+    //   Authorization: `Bearer ${token}`
+    // }
+    // }).then(res => {
+    // console.log(res, res.data)
+    // this.userInfo = res.data
+    // console.log(this.userInfo)
+    // })
+    this.getUserInfo()
+    eventBus.$on('sucPic', () => { // 监听数据变化作出反应
+      this.getUserInfo()
     })
   },
   methods: {
+    getUserInfo () {
+      this.$http({
+        url: '/user/profile'
+      }).then(res => {
+        this.userInfo = res.data
+      })
+    },
     // 头部下拉菜单的指令事件
     commands (command) {
       if (command === 'user') {
