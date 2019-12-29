@@ -4,15 +4,24 @@
       <template slot="title">素材管理</template>
     </breadcrumb>
     <!-- 上传组件 -->
-    <el-row type="flex" justify="end"><el-upload action="" :http-request="uploadImg" :show-file-list="false"><el-button type="primary" size="small">上传</el-button></el-upload></el-row>
+    <el-row type="flex" justify="end">
+      <el-upload action :http-request="uploadImg" :show-file-list="false">
+        <el-button type="primary" size="small">上传</el-button>
+      </el-upload>
+    </el-row>
     <el-tabs v-model="activeName" @tab-click="toOther">
       <el-tab-pane label="全部" name="all">
         <!-- 生成数据 -->
         <div class="imgClass">
-          <el-card v-for="item of list" :key="item.id" class="img-card">
-            <img :src="item.url" alt />
+          <el-card v-for="(item,index) of list" :key="item.id" class="img-card">
+            <img :src="item.url" alt @click="openDialog(index)" />
             <el-row class="pos" type="flex" justify="space-around" align="middle">
-              <i @click="collectOrCancel(item)" :style="{color:item.is_collected ? 'red' : '#000'}" class="el-icon-sunrise" ref="state"></i>
+              <i
+                @click="collectOrCancel(item)"
+                :style="{color:item.is_collected ? 'red' : '#000'}"
+                class="el-icon-sunrise"
+                ref="state"
+              ></i>
               <i class="el-icon-delete" @click="delItem(item.id)"></i>
             </el-row>
           </el-card>
@@ -37,6 +46,13 @@
         @current-change="changePage"
       ></el-pagination>
     </el-row>
+    <el-dialog :visible="visibleDialog" @opened="openEnd" @close="visibleDialog = false">
+      <el-carousel :interval="5000" arrow="always" ref="myCarousel">
+        <el-carousel-item  v-for="(item,index) in list" :key="index">
+          <img :src="item.url" alt style="width:100%;height:100%;" />
+        </el-carousel-item>
+      </el-carousel>
+    </el-dialog>
   </el-card>
 </template>
 
@@ -47,25 +63,37 @@ export default {
       page: {
         pageSize: 8, // 每页显示个数
         total: 0, // 总条目
-        currentPage: 1// 当前页
+        currentPage: 1 // 当前页
       },
       loading: false,
+      visibleDialog: false, // 默认弹层隐藏
       list: [],
-      activeName: 'all' // 默认选中
+      activeName: 'all', // 默认选中
+      clickIndex: -1// 设置变量1 在下边完成传递（openDialog）在openend中使用
     }
   },
   methods: {
-    changePage (newpage) {
+    openDialog (index) {
+      this.visibleDialog = true
+      this.clickIndex = index
+    },
+    openEnd () {
+      this.$refs.myCarousel.setActiveItem(this.clickIndex)
+      // opened是dialog打开动画结束时的回调
+      // 获取到走马灯 通过走马灯的这个手动切换幻灯片方法 利用index
+      // 实现了点击 至目标图片
+    },
+    changePage (newpage) { // 改变页码
       this.page.currentPage = newpage
       this.getMaterial()
       console.log(this.page.total)
     },
-    collectOrCancel (item) {
+    collectOrCancel (item) { // 是否收藏
       this.$http({
         url: `/user/images/${item.id}`,
         method: 'put',
         data: {
-          collect: !item.is_collected
+          collect: !item.is_collected// 点击时传递不同的结果发送请求
         }
       }).then(res => {
         this.getMaterial()
@@ -83,7 +111,8 @@ export default {
         })
       })
     },
-    getMaterial () { // 获取素材
+    getMaterial () {
+      // 获取素材
       this.$http({
         url: '/user/images',
         params: {
