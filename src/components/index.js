@@ -2,6 +2,7 @@ import asideview from './home-aside/aside-view.vue'
 import headerview from './home-header/header-view.vue'
 import breadcrumb from './bread-s/index.vue'
 import coverImage from '../components/publish/cover-image.vue'
+import selectImage from '../components/publish/select-image.vue'
 import { quillEditor } from 'vue-quill-editor'
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
@@ -13,5 +14,6 @@ export default {
     Vue.component('breadcrumb', breadcrumb)// 面包屑
     Vue.component('quill-editor', quillEditor)// 注册全局富文本编辑器
     Vue.component('cover-image', coverImage)// 封面组件
+    Vue.component('select-image', selectImage)// 封面组件
   }
 }

@@ -25,7 +25,8 @@
           <!-- {{formData.cover}} -->
         </el-form-item>
         <!-- 封面组件 -->
-        <cover-image :list="formData.cover.images"></cover-image>
+        <!-- 父传子三部曲 在子标签上写属性 传递数据 => 子组件用属性名接收 => 在子组件上渲染-->
+        <cover-image :list="formData.cover.images" @selectTwo="reciveTwo"></cover-image>
         <el-form-item label="频道" prop="channel_id">
           <el-select v-model=formData.channel_id>
             <el-option v-for="item in channels"
@@ -68,6 +69,18 @@ export default {
     }
   },
   methods: {
+    reciveTwo (url, index) { // 第二次传递接收到的url,以及index
+    // 响应式更新
+      // this.formData.cover.images = this.formData.cover.images.map(function (item, i) {
+      //   if (index === i) {
+      //     // 如果index等于i说明找到了要替换的地址
+      //     return url
+      //   } else {
+      //     return item // 没找到返回元数据
+      //   }
+      // })上边的简写
+      this.formData.cover.images = this.formData.cover.images.map((item, i) => index === i ? url : item)
+    },
     getChannels () { // 获取频道
       this.$http({
         url: '/channels'
