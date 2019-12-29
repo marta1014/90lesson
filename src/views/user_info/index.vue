@@ -1,5 +1,5 @@
 <template>
-  <el-card>
+  <el-card v-loading="loading">
       <breadcrumb slot="header">
       <template slot="title">账户信息</template>
       </breadcrumb>
@@ -22,7 +22,7 @@
               <el-button type="primary" @click="confirm">保存</el-button>
           </el-form-item>
       </el-form>
-      <el-upload :show-file-list="false" action="" class="userPic">
+      <el-upload :show-file-list="false" action="" class="userPic" :http-request="upload">
           <img :src="formData.photo ? formData.photo: defaultImg" alt="">
       </el-upload>
   </el-card>
@@ -33,6 +33,7 @@ export default {
   // 校验三要素 :model prop rules
   data () {
     return {
+      loading: false,
       defaultImg: require('../../assets/img/Apple_Music_logo_black.png'), // 图片缺失补充图
       formData: {// 接收请求的数据
         name: '',
@@ -73,6 +74,23 @@ export default {
             })
           })
         }
+      })
+    },
+    upload (params) { // 编辑用户头像
+      let data = new FormData()
+      data.append('photo', params.file)
+      this.loading = true
+      this.$http({
+        url: '/user/photo',
+        method: 'patch',
+        data
+      }).then(res => {
+        this.loading = false
+        this.$message({
+          type: 'success',
+          message: '修改成功'
+        })
+        this.formData.photo = res.data.photo
       })
     }
   },
