@@ -1,8 +1,8 @@
 <template>
   <el-row type="flex" justify="space-between" class="header">
     <el-col :span="18" class="left">
-      <!-- <i class="el-icon-turn-off-microphone"></i>
-      <span>失眠</span> -->
+      <!-- 绑定class对象 实现图标点击切换 -->
+      <i :class="{ 'el-icon-s-unfold' : !spread,'el-icon-s-fold' : spread }" @click="spreadOk"></i>
     </el-col>
     <el-col :span="6" class="right">
       <el-row justify="end" type="flex" align="middle">
@@ -66,8 +66,9 @@ export default {
         name: '备爱',
         address: '慢慢忘记从前'
       }],
-      defaultImg: require('../../assets/img/avatar.jpg')
+      defaultImg: require('../../assets/img/avatar.jpg'),
       // 需要一个默认值 在没有头像的情况下给一个图片
+      spread: true// 定义默认展开状态
     }
   },
   created () {
@@ -90,12 +91,17 @@ export default {
     })
   },
   methods: {
-    getUserInfo () {
+    getUserInfo () { // 获取用户信息
       this.$http({
         url: '/user/profile'
       }).then(res => {
         this.userInfo = res.data
       })
+    },
+    spreadOk () {
+      // 展开或者折叠
+      this.spread = !this.spread
+      eventBus.$emit('changeStatus')
     },
     // 头部下拉菜单的指令事件
     commands (command) {
@@ -119,7 +125,10 @@ export default {
   .left {
     span {
       margin-left: 10px;
-      font-size: 10px;
+      font-size: 20px;
+    }
+    i {
+      font-size: 30px;
     }
   }
   .right {
