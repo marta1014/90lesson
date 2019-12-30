@@ -31,7 +31,7 @@ export default {
     }
   },
   created () {
-    eventBus.$on('changeStatus', () => {
+    eventBus.$on('changeStatus', () => { // 监听折叠状态
       // 通知组件改变
       this.spread = !this.spread
       console.log(this.spread)

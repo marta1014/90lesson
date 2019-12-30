@@ -98,7 +98,7 @@ export default {
         this.userInfo = res.data
       })
     },
-    spreadOk () {
+    spreadOk () { // 触发折叠
       // 展开或者折叠
       this.spread = !this.spread
       eventBus.$emit('changeStatus')
