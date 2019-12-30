@@ -26,9 +26,10 @@ const routes = [// 配置路由
       { path: '/home/d', component: () => import('../views/material/index.vue') },
       { path: '/home/i', component: () => import('../views/user_info/index.vue') },
       { path: '/home/j', component: () => import('../views/echarts/index.vue') }, // 图秀组件
-      { path: '/home/b/:id', component: () => import('../views/publish/index.vue') }// 修改文章
+      { path: '/home/b/:id', component: () => import('../views/publish/index.vue') } // 修改文章
     ]
-  }
+  },
+  { path: '*', component: () => import('../views/404.vue') }
   // {
   // path: '/about',
   // name: 'about',
