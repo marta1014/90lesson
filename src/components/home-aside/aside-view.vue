@@ -1,7 +1,7 @@
 <template>
   <div>
       <div class="title"><img :src="collapseA ? bigImg : smallImg" alt=""></div>
-    <el-menu style="background:#00ced1;border-right:none;" router :collapse="!collapseA">
+    <el-menu style="background:#00ced1;border-right:none;" router :collapse="!collapseA" background-color="#00ced1">
       <!-- 路由设置就是给其设置一个router属性 值为布尔值 可省略  子项设置index-->
       <el-menu-item index="/home"><i class="el-icon-s-home"></i><span>发现音乐</span></el-menu-item>
       <el-menu-item index="/home/j"><i class="el-icon-s-grid"></i><span>私人FM</span></el-menu-item>
